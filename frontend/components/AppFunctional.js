@@ -1,14 +1,17 @@
-import React from 'react'
+import React, { useState } from "react";
 
 // önerilen başlangıç stateleri
-const initialMessage = ''
-const initialEmail = ''
-const initialSteps = 0
-const initialIndex = 4 //  "B" nin bulunduğu indexi
+const initialMessage = "";
+const initialEmail = "";
+const initialSteps = 0;
+const initialIndex = 4; //  "B" nin bulunduğu indexi
 
 export default function AppFunctional(props) {
   // AŞAĞIDAKİ HELPERLAR SADECE ÖNERİDİR.
   // Bunları silip kendi mantığınızla sıfırdan geliştirebilirsiniz.
+
+  const [email, setEmail] = useState(initialEmail);
+  const [message, setMessage] = useState(initialMessage);
 
   function getXY() {
     // Koordinatları izlemek için bir state e sahip olmak gerekli değildir.
@@ -38,10 +41,13 @@ export default function AppFunctional(props) {
 
   function onChange(evt) {
     // inputun değerini güncellemek için bunu kullanabilirsiniz
+    
   }
 
-  function onSubmit(evt) {
+  function onSubmit() {
     // payloadu POST etmek için bir submit handlera da ihtiyacınız var.
+    preventDefault(); // Sayfanın yenilenmesini durdurur
+    setMessage({email}); // Email değerini kullanıcıya gösterir
   }
 
   return (
@@ -51,16 +57,14 @@ export default function AppFunctional(props) {
         <h3 id="steps">0 kere ilerlediniz</h3>
       </div>
       <div id="grid">
-        {
-          [0, 1, 2, 3, 4, 5, 6, 7, 8].map(idx => (
-            <div key={idx} className={`square${idx === 4 ? ' active' : ''}`}>
-              {idx === 4 ? 'B' : null}
-            </div>
-          ))
-        }
+        {[0, 1, 2, 3, 4, 5, 6, 7, 8].map((idx) => (
+          <div key={idx} className={`square${idx === 4 ? " active" : ""}`}>
+            {idx === 4 ? "B" : null}
+          </div>
+        ))}
       </div>
       <div className="info">
-        <h3 id="message"></h3>
+        <h3 id="message">{message}</h3>
       </div>
       <div id="keypad">
         <button id="left">SOL</button>
@@ -69,10 +73,10 @@ export default function AppFunctional(props) {
         <button id="down">AŞAĞI</button>
         <button id="reset">reset</button>
       </div>
-      <form>
-        <input id="email" type="email" placeholder="email girin"></input>
+      <form onSubmit={onSubmit}>
+        <input id="email" type="email" placeholder="email girin" onChange={email} ></input>
         <input id="submit" type="submit"></input>
       </form>
     </div>
-  )
+  );
 }
